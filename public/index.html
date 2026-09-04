@@ -1,95 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Google Docs</title>
-  <link rel="icon" href="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico" />
+  <link rel="icon" href="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico">
   <style>
-    :root {
-      --bg: #090b10;
-      --card: #11141e;
-      --border: #1d2538;
-      --accent: #ff4757;
-      --green: #00d26a;
-      --text: #f8fafc;
-      --muted: #8899ad;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; user-select: none; }
-    body {
-      background: radial-gradient(circle at 50% 10%, #151c2e 0%, var(--bg) 100%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .box {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      width: 100%;
-      max-width: 600px;
-      padding: 24px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 12px;
-      margin-bottom: 16px;
-    }
-    .badge {
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 6px;
-    }
-    .input-box {
-      background: #080a0f;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-    .btn-auth {
-      background: var(--green);
-      border: none;
-      color: #000;
-      font-weight: 700;
-      padding: 10px 18px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
+    :root { --bg: #090b10; --card: #11141e; --border: #1d2538; --accent: #ff4757; --green: #00d26a; --text: #f8fafc; --muted: #8899ad; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; user-select: none; }
+    body { background: radial-gradient(circle at 50% 10%, #151c2e 0%, var(--bg) 100%); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 600px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px; }
+    .badge { background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
+    .input-box { background: #080a0f; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+    .btn-auth { background: var(--green); border: none; color: #000; font-weight: 700; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
     .btn-auth:hover { filter: brightness(1.15); }
-    .btn-launch {
-      width: 100%;
-      background: linear-gradient(135deg, var(--accent), #d63031);
-      border: none;
-      color: #fff;
-      font-weight: 700;
-      padding: 14px;
-      border-radius: 8px;
-      font-size: 1.15rem;
-      cursor: pointer;
-      margin-top: 14px;
-    }
+    .btn-launch { width: 100%; background: linear-gradient(135deg, var(--accent), #d63031); border: none; color: #fff; font-weight: 700; padding: 14px; border-radius: 8px; font-size: 1.15rem; cursor: pointer; margin-top: 14px; }
     .btn-launch:hover { filter: brightness(1.15); }
+    .code-pill { background: #1b2234; color: #00ff80; padding: 4px 12px; border-radius: 6px; font-family: monospace; font-size: 1.5rem; letter-spacing: 2px; }
+    .btn-copy-code { background: #2a354f; border: none; color: #fff; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; margin-left: 8px; }
   </style>
 </head>
 <body>
-
   <div class="box">
     <div class="header">
       <div style="display:flex; align-items:center; gap:10px;">
-        <span class="badge">RENDER GATEWAY</span>
-        <h2 style="font-size:1.25rem;">DonutSMP Proxy Launcher</h2>
+        <span class="badge">ONLINE GATEWAY</span>
+        <h2>DonutSMP Proxy Launcher</h2>
       </div>
       <span style="color:var(--green); font-family:monospace; font-size:0.85rem;">● Online</span>
     </div>
@@ -99,22 +35,27 @@
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
           <div style="font-size:0.75rem; color:var(--muted); text-transform:uppercase;">Java Account</div>
-          <div id="auth-status" style="font-weight:700; color:var(--accent); font-size:0.95rem;">● Not Linked</div>
+          <div id="auth-status" style="font-weight:700; color:var(--accent);">● Not Linked</div>
         </div>
         <button class="btn-auth" id="btn-auth" onclick="startAuth()">Sign In With Microsoft</button>
       </div>
 
-      <div id="code-panel" style="display:none; margin-top:14px; border-top:1px solid #1a2236; padding-top:10px;">
-        <div style="font-size:0.85rem;">1. Go to: <a href="https://microsoft.com/link" target="_blank" style="color:var(--green); font-weight:700;">https://microsoft.com/link</a></div>
-        <div style="font-size:0.85rem; margin-top:6px;">2. Enter code: <b id="user-code" style="color:#fff; background:#1b2234; padding:3px 8px; border-radius:4px; font-family:monospace; font-size:1.3rem;">----</b></div>
-        <div style="font-size:0.75rem; color:var(--muted); margin-top:6px;">Waiting for approval in your browser...</div>
+      <div id="code-panel" style="display:none; margin-top:14px; border-top:1px solid #1a2236; padding-top:12px;">
+        <div style="font-size:0.9rem; margin-bottom:8px;">
+          1. Go to: <a href="https://microsoft.com/link" target="_blank" style="color:var(--green); font-weight:700; text-decoration:underline;">https://microsoft.com/link</a>
+        </div>
+        <div style="font-size:0.9rem; display:flex; align-items:center; margin-bottom:8px;">
+          2. Enter Code: <b class="code-pill" id="user-code">----</b>
+          <button class="btn-copy-code" onclick="copyCode()">Copy Code</button>
+        </div>
+        <div style="font-size:0.75rem; color:var(--muted);" id="poll-msg">Waiting for approval on Microsoft...</div>
       </div>
     </div>
 
-    <!-- Gateway Address -->
+    <!-- Address -->
     <div class="input-box">
       <div style="font-size:0.75rem; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">In-Game Connect Address:</div>
-      <div style="font-family:monospace; color:#fff; font-size:0.9rem;" id="gw-url">Loading gateway address...</div>
+      <div style="font-family:monospace; color:#fff;" id="gw-url">Loading...</div>
     </div>
 
     <button class="btn-launch" onclick="launchGame()">LAUNCH IN ABOUT:BLANK</button>
@@ -124,36 +65,71 @@
     const gateway = (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/gateway';
     document.getElementById('gw-url').textContent = gateway;
 
+    let activeUserCode = '';
+
+    function copyCode() {
+      if (activeUserCode) {
+        navigator.clipboard.writeText(activeUserCode);
+        alert(`Copied "${activeUserCode}" to clipboard!`);
+      }
+    }
+
     async function startAuth() {
       const btn = document.getElementById('btn-auth');
+      const panel = document.getElementById('code-panel');
+      const codeEl = document.getElementById('user-code');
+
       btn.disabled = true;
-      btn.textContent = 'Contacting...';
+      btn.textContent = 'Generating Code...';
 
-      const res = await fetch('/api/auth/start', { method: 'POST' });
-      const data = await res.json();
+      try {
+        const res = await fetch('/api/auth/start', { method: 'POST' });
+        const data = await res.json();
 
-      document.getElementById('code-panel').style.display = 'block';
-      document.getElementById('user-code').textContent = data.user_code;
-      window.open('https://microsoft.com/link', '_blank');
+        if (data.user_code) {
+          activeUserCode = data.user_code;
+          panel.style.display = 'block';
+          codeEl.textContent = data.user_code;
+          btn.textContent = 'Waiting for Approval...';
 
-      const poll = setInterval(async () => {
-        const pollRes = await fetch('/api/auth/poll', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ device_code: data.device_code })
-        });
-        const pollData = await pollRes.json();
+          // Open verification page
+          window.open(data.verification_uri || 'https://microsoft.com/link', '_blank');
 
-        if (pollData.access_token) {
-          clearInterval(poll);
-          document.getElementById('code-panel').style.display = 'none';
-          document.getElementById('auth-status').textContent = '● Verified (Online Mode Ready)';
-          document.getElementById('auth-status').style.color = 'var(--green)';
+          // Polling
+          const poll = setInterval(async () => {
+            const pollRes = await fetch('/api/auth/poll', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ device_code: data.device_code, client_id: data.client_id })
+            });
+            const pollData = await pollRes.json();
+
+            if (pollData.access_token) {
+              clearInterval(poll);
+              panel.style.display = 'none';
+              document.getElementById('auth-status').textContent = '● Verified (Online Mode Ready)';
+              document.getElementById('auth-status').style.color = 'var(--green)';
+              btn.disabled = false;
+              btn.textContent = 'Account Linked';
+              alert('Success! Microsoft account verified for DonutSMP.');
+            } else if (pollData.error && pollData.error !== 'authorization_pending') {
+              clearInterval(poll);
+              btn.disabled = false;
+              btn.textContent = 'Sign In With Microsoft';
+              alert('Auth timed out or was cancelled. Please try again.');
+            }
+          }, (data.interval || 5) * 1000);
+
+        } else {
+          alert('Microsoft Error: ' + (data.error_description || data.error || 'Could not generate code. Check Render logs.'));
           btn.disabled = false;
-          btn.textContent = 'Account Linked';
-          alert('Success! Microsoft account verified for DonutSMP.');
+          btn.textContent = 'Sign In With Microsoft';
         }
-      }, 4000);
+      } catch (err) {
+        alert('Server Error: ' + err.message);
+        btn.disabled = false;
+        btn.textContent = 'Sign In With Microsoft';
+      }
     }
 
     function launchGame() {
@@ -163,20 +139,20 @@
       link.rel = 'icon';
       link.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
       win.document.head.appendChild(link);
-      win.document.body.style.cssText = 'margin:0; width:100vw; height:100vh; overflow:hidden; background:#000; position:relative;';
+      win.document.body.style.cssText = 'margin:0; width:100vw; height:100vh; overflow:hidden; background:#000;';
 
       const iframe = win.document.createElement('iframe');
-      iframe.style.cssText = 'border:none; width:100%; height:100%; display:block; position:absolute; top:0; left:0;';
+      iframe.style.cssText = 'border:none; width:100%; height:100%; display:block;';
       iframe.allow = 'fullscreen; autoplay; pointer-lock; clipboard-write; keyboard-map';
       iframe.src = 'https://thebananamanjcgaming.github.io/EaglercraftZ-26.1.1/';
       win.document.body.appendChild(iframe);
 
       const bar = win.document.createElement('div');
-      bar.style.cssText = 'position:fixed; bottom:12px; right:12px; background:#111522; border:1px solid #ff4757; padding:8px 12px; border-radius:6px; z-index:999999; color:#fff; font-size:0.85rem; display:flex; align-items:center; gap:8px;';
-      bar.innerHTML = 'Gateway: <b style="color:#00d26a;">' + gateway + '</b> <button id="cp" style="background:#ff4757; border:none; color:#fff; padding:4px 8px; border-radius:4px; cursor:pointer; font-weight:700;">Copy</button>';
+      bar.style.cssText = 'position:fixed; bottom:12px; right:12px; background:#111522; border:1px solid #ff4757; padding:8px 12px; border-radius:6px; z-index:999999; color:#fff; font-size:0.85rem;';
+      bar.innerHTML = 'Gateway: <b style="color:#00d26a;">' + gateway + '</b> <button id="cp" style="background:#ff4757; border:none; color:#fff; padding:3px 8px; border-radius:4px; cursor:pointer; font-weight:700;">Copy</button>';
       win.document.body.appendChild(bar);
 
-      win.eval('document.getElementById("cp").onclick = () => { navigator.clipboard.writeText("' + gateway + '"); alert("Copied gateway address! In Multiplayer -> Direct Connect, paste this address."); };');
+      win.eval('document.getElementById("cp").onclick = () => { navigator.clipboard.writeText("' + gateway + '"); alert("Copied gateway address! In Multiplayer -> Direct Connect, paste this."); };');
     }
   </script>
 </body>
