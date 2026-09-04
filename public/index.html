@@ -18,6 +18,7 @@
     .btn-launch:hover { filter: brightness(1.15); }
     .code-pill { background: #1b2234; color: #00ff80; padding: 4px 12px; border-radius: 6px; font-family: monospace; font-size: 1.5rem; letter-spacing: 2px; }
     .btn-copy-code { background: #2a354f; border: none; color: #fff; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; margin-left: 8px; }
+    select { width: 100%; background: #121622; border: 1px solid #2a354f; color: #fff; padding: 8px; border-radius: 6px; margin-top: 6px; outline: none; }
   </style>
 </head>
 <body>
@@ -52,7 +53,16 @@
       </div>
     </div>
 
-    <!-- Address -->
+    <!-- Client Version Selector -->
+    <div class="input-box">
+      <div style="font-size:0.75rem; color:var(--muted); text-transform:uppercase;">Select Game Client:</div>
+      <select id="client-select">
+        <option value="https://mathlearninghub123alphabeta123teachinghowdodomathinschool262.surge.sh/">Eaglercraft 26.2 (Surge Verified - Recommended)</option>
+        <option value="https://eaglercraft.com/mc/1.8.8/">EaglercraftX 1.8.8 Official</option>
+      </select>
+    </div>
+
+    <!-- Gateway Address -->
     <div class="input-box">
       <div style="font-size:0.75rem; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">In-Game Connect Address:</div>
       <div style="font-family:monospace; color:#fff;" id="gw-url">Loading...</div>
@@ -92,10 +102,8 @@
           codeEl.textContent = data.user_code;
           btn.textContent = 'Waiting for Approval...';
 
-          // Open verification page
           window.open(data.verification_uri || 'https://microsoft.com/link', '_blank');
 
-          // Polling
           const poll = setInterval(async () => {
             const pollRes = await fetch('/api/auth/poll', {
               method: 'POST',
@@ -112,16 +120,10 @@
               btn.disabled = false;
               btn.textContent = 'Account Linked';
               alert('Success! Microsoft account verified for DonutSMP.');
-            } else if (pollData.error && pollData.error !== 'authorization_pending') {
-              clearInterval(poll);
-              btn.disabled = false;
-              btn.textContent = 'Sign In With Microsoft';
-              alert('Auth timed out or was cancelled. Please try again.');
             }
           }, (data.interval || 5) * 1000);
-
         } else {
-          alert('Microsoft Error: ' + (data.error_description || data.error || 'Could not generate code. Check Render logs.'));
+          alert('Microsoft Error: ' + (data.error_description || data.error));
           btn.disabled = false;
           btn.textContent = 'Sign In With Microsoft';
         }
@@ -133,26 +135,28 @@
     }
 
     function launchGame() {
+      const clientUrl = document.getElementById('client-select').value;
+
       const win = window.open('about:blank', '_blank');
       win.document.title = 'Google Docs';
       const link = win.document.createElement('link');
       link.rel = 'icon';
       link.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
       win.document.head.appendChild(link);
-      win.document.body.style.cssText = 'margin:0; width:100vw; height:100vh; overflow:hidden; background:#000;';
+      win.document.body.style.cssText = 'margin:0; width:100vw; height:100vh; overflow:hidden; background:#000; position:relative;';
 
       const iframe = win.document.createElement('iframe');
       iframe.style.cssText = 'border:none; width:100%; height:100%; display:block;';
       iframe.allow = 'fullscreen; autoplay; pointer-lock; clipboard-write; keyboard-map';
-      iframe.src = 'https://thebananamanjcgaming.github.io/EaglercraftZ-26.1.1/';
+      iframe.src = clientUrl;
       win.document.body.appendChild(iframe);
 
       const bar = win.document.createElement('div');
-      bar.style.cssText = 'position:fixed; bottom:12px; right:12px; background:#111522; border:1px solid #ff4757; padding:8px 12px; border-radius:6px; z-index:999999; color:#fff; font-size:0.85rem;';
+      bar.style.cssText = 'position:fixed; bottom:12px; right:12px; background:#111522; border:1px solid #ff4757; padding:8px 12px; border-radius:6px; z-index:999999; color:#fff; font-size:0.85rem; display:flex; align-items:center; gap:8px;';
       bar.innerHTML = 'Gateway: <b style="color:#00d26a;">' + gateway + '</b> <button id="cp" style="background:#ff4757; border:none; color:#fff; padding:3px 8px; border-radius:4px; cursor:pointer; font-weight:700;">Copy</button>';
       win.document.body.appendChild(bar);
 
-      win.eval('document.getElementById("cp").onclick = () => { navigator.clipboard.writeText("' + gateway + '"); alert("Copied gateway address! In Multiplayer -> Direct Connect, paste this."); };');
+      win.eval('document.getElementById("cp").onclick = () => { navigator.clipboard.writeText("' + gateway + '"); alert("Copied gateway address! In Multiplayer -> Direct Connect, paste this address."); };');
     }
   </script>
 </body>
