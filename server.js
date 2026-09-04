@@ -1,7 +1,6 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
-const net = require('net');
 const path = require('path');
 const fs = require('fs');
 
@@ -13,10 +12,10 @@ const PORT = process.env.PORT || 10000;
 const TARGET_HOST = 'donutsmp.net';
 const TARGET_PORT = 25565;
 
-// Verified Minecraft & Xbox Client IDs for Microsoft Device Code Flow
+// Verified Microsoft Client IDs
 const CLIENT_IDS = [
-  'c36a9fb6-4f2a-41ff-90bd-ae7cc92031eb', // Official Prism Launcher Client ID
-  '1f907974-e22b-4810-a9de-d9647380c97e'  // Xbox Live Client ID Fallback
+  'c36a9fb6-4f2a-41ff-90bd-ae7cc92031eb',
+  '1f907974-e22b-4810-a9de-d9647380c97e'
 ];
 
 app.use(express.json());
@@ -32,7 +31,7 @@ app.get('/', (req, res) => {
   res.status(404).send('index.html not found');
 });
 
-// 1. Microsoft Device Code Generator with Auto-Fallback
+// 1. Microsoft Device Code Generator
 app.post('/api/auth/start', async (req, res) => {
   for (const clientId of CLIENT_IDS) {
     try {
@@ -73,32 +72,40 @@ app.post('/api/auth/poll', async (req, res) => {
   }
 });
 
-// 2. WebSocket to DonutSMP TCP Gateway
-wss.on('connection', (ws) => {
-  console.log('[Gateway] Client connected! Tunneling to ' + TARGET_HOST);
-  const tcp = new net.Socket();
+// 2. Eaglercraft-Aware Gateway to DonutSMP
+wss.on('connection', (clientWs) => {
+  console.log('[Gateway] Client connected! Routing through Eagler Handshake Bridge...');
 
-  tcp.connect(TARGET_PORT, TARGET_HOST, () => {
-    console.log('[Gateway] Connected to ' + TARGET_HOST);
+  // Connects to EagPAAS bridge targeting DonutSMP
+  const upstreamUrl = `wss://eaglerproxy.q13x.com/?ip=${TARGET_HOST}&port=${TARGET_PORT}&authType=ONLINE`;
+  const upstreamWs = new WebSocket(upstreamUrl);
+
+  // Pipe Client <-> Upstream Gateway
+  clientWs.on('message', (msg, isBinary) => {
+    if (upstreamWs.readyState === WebSocket.OPEN) {
+      upstreamWs.send(msg, { binary: isBinary });
+    }
   });
 
-  ws.on('message', (data) => {
-    if (tcp.writable) tcp.write(data);
+  upstreamWs.on('message', (msg, isBinary) => {
+    if (clientWs.readyState === WebSocket.OPEN) {
+      clientWs.send(msg, { binary: isBinary });
+    }
   });
 
-  tcp.on('data', (chunk) => {
-    if (ws.readyState === WebSocket.OPEN) ws.send(chunk);
+  upstreamWs.on('open', () => {
+    console.log('[Gateway] Bridge established to DonutSMP!');
   });
 
-  tcp.on('close', () => ws.close());
-  ws.on('close', () => tcp.end());
-  tcp.on('error', (err) => {
-    console.error('[TCP Error]', err.message);
-    ws.close();
+  upstreamWs.on('close', () => clientWs.close());
+  clientWs.on('close', () => upstreamWs.close());
+  upstreamWs.on('error', (err) => {
+    console.error('[Upstream Error]', err.message);
+    clientWs.close();
   });
-  ws.on('error', (err) => {
-    console.error('[WS Error]', err.message);
-    tcp.end();
+  clientWs.on('error', (err) => {
+    console.error('[Client Error]', err.message);
+    upstreamWs.close();
   });
 });
 
